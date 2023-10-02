@@ -17,18 +17,6 @@ string current_time(){
     char* dt = ctime(&now);
     return dt;
 }
-// void borrowed(borrowed_item &borrowed_item_record,string usertype,int i,string name,string title){
-//     if(usertype=="student"){
-//         borrowed_item_record[i].lending_period="1month";
-//     }
-//     else{
-//         borrowed_item_record[i].lending_period="6month";
-//     }
-//     borrowed_item[i].name=name;
-//     borrowed_item_record[i].title=title;
-//     borrowed_item_record[i].date=current_time();
-
-// }
 
 
 class user{
@@ -130,7 +118,7 @@ int check_faculty(string account,string password,Faculty* F ,int q){
  }
  return 0;
 }
-void search_book(string name,book object){
+void search_book(string name,book & object){
     for(int i=0;i<110;i++){
         if(name==object.book_rows_array[i].original_title){
             int row=i/10,col=i%10;
@@ -140,7 +128,7 @@ void search_book(string name,book object){
     }
     cout<<"\n\nError!! Book is not present \n";
 }
-void search_magazine(string name,magazine object){
+void search_magazine(string name,magazine & object){
     char s='"';
     name=s+name+s;
     for(int i=0;i<110;i++){
@@ -213,7 +201,18 @@ void Return_magazine(string name,magazine & object){
     }
  }
 }
-
+string which_lib(int i){
+    if(i%5==0||i%5==4){
+        return "IIIT Delhi";
+    }
+    else if(i%5==1){
+        return "IIIT Hyderabad";
+    }
+    else if(i%5==2){
+        return "IIIT Bangalore";
+    }
+    return "IIIT Allahbad";
+}
 void Borrow_journals(string name,journal & object){
     for(int i=0;i<100;i++){
         // std::cout<<i<<" "<<object.journal_array[i]<<endl;
@@ -229,6 +228,66 @@ void Borrow_journals(string name,journal & object){
     std::cout<<"\n\nError!! that journal is not available \n";
     
 }
+void find_in_other_lib(string name,string item,book & book_object,magazine & magazine_object){
+        if(item=="book"){
+        for(int i=0;i<110;i++){
+            if(name==book_object.book_rows_array[i].original_title){
+                int row=i/10;
+                int col=i%10;
+                string s=which_lib(i);
+                cout<<"\n\n Book is in the "<<s<<" college library at row "<<row+1<<" and column "<<col+1<<endl;
+            }
+        }
+    }
+    else if(item=="magazine"){
+        for(int i=0;i<110;i++){
+            if(name==magazine_object.magazine_array[i].publication){
+                string s=which_lib(i);
+                int row=i/10;
+                int col=i%10;
+                cout<<"\n\n Magazine is in the "<<s<<" college library at row "<<row+1<<" and column "<<col+1<<endl;              
+            }
+        }
+    }
+}
+void Borrow_from_other_lib(string name,string item,book & book_object,magazine & magazine_object){
+    if(item=="book"){
+        for(int i=0;i<110;i++){
+            cout<<i<<" "<<book_object.book_rows_array[i].original_title<<endl;
+            if(name==book_object.book_rows_array[i].original_title){
+                string s=which_lib(i);
+                if(s=="IIIT Delhi"){
+                    cout<<"\n\nBook Successfully issued\n";
+                    cout<<"\n\nBook is in "<<s<<endl;
+                    cout<<"\n\nBook is issued on date and time at :"<<current_time()<<endl;
+                    return;
+                }
+                else{
+                    std::cout<<"\n\nBook is in "<<s<<endl;
+                    std::cout<<"\n\n It will take 7 days of delay \n";
+                    return;
+                }
+            }
+        }
+    }
+    else if(item=="magazine"){
+        for(int i=0;i<110;i++){
+            if(name==magazine_object.magazine_array[i].publication){
+                string s=which_lib(i);
+                if(s=="IIIT Delhi"){
+                    cout<<"\n\nMagazine Successfully issued\n";
+                    cout<<"\n\nMagazine is issued on date and time at :"<<current_time()<<endl;
+                }
+                else{
+                    cout<<"\n\n It will take 7 days of delay\n";
+                }
+            }
+        }
+    }
+
+
+}
+void Record_of_purchase(){}
 
 void student_display(journal & journal_object,magazine & magazine_object,book & book_object)
 {
@@ -245,7 +304,10 @@ void student_display(journal & journal_object,magazine & magazine_object,book & 
 	cout << "\t\t5. Return Book\n";
     cout << "\t\t6. Borrow Magazine\n";
     cout << "\t\t7. Return Magazine\n";
-	cout << "\t\t8. Exit\n";
+    std::cout<<"\t\t8. Borrow from other libraray \n";
+    std::cout<<"\t\t9. Find in other libraray \n";
+    std::cout<<"\t\t10. Record for purchase of the new journals, books or magazines \n";
+    std::cout << "\t\t11. Exit\n";
 	cout << endl;
 	cout << "Please Enter Your Above Choice : ";
 	int chose;
@@ -303,9 +365,66 @@ void student_display(journal & journal_object,magazine & magazine_object,book & 
 		Return_magazine(name,magazine_object);
 		break;
     case 8:
-		// main();
-        system("clr");
+        cout<<"\t\t1.Borrow Book from other library if it is not available in our college\n";
+        cout<<"\t\t2.Borrow Magazine from other library if it is not available in our college\n";
+        cout<<"\nEnter the choice from above\n";
+        int c;
+        cin>>c;
+        if(c==1){
+            cout<<"\n\nEnter the original title of the book you want to search for \n";
+            string book_name;
+            std::cin.clear();
+            std::cin.sync();
+            std::getline(std::cin,book_name);
+            Borrow_from_other_lib(book_name,"book",book_object,magazine_object);
+        }
+        else if(c==2){
+            cout<<"\n\nEnter the publication name of the magazinre you want to search for\n";
+            string magazine_name;
+            std::cin.clear();
+            std::cin.sync();
+            std::getline(std::cin,magazine_name);
+            Borrow_from_other_lib(magazine_name,"magazine",book_object,magazine_object);
+        }
+        else{
+            cout<<"\n\nError!! Invalid choice \n";
+        }
+        
+        break;
+    case 9:
+        cout<<"\t\t1.Find Book from other library if it is not available in our college\n";
+        cout<<"\t\t2.Find Magazine from other library if it is not available in our college\n";
+        cout<<"\nEnter the choice from above\n";
+        int t;
+        cin>>t;
+        if(t==1){
+            cout<<"\n\nEnter the original title of the book you want to search for \n";
+            string book_name;
+            std::cin.clear();
+            std::cin.sync();
+            std::getline(std::cin,book_name);
+            find_in_other_lib(book_name,"book",book_object,magazine_object);
+        }
+        else if(t==2){
+            cout<<"\n\nEnter the publication name of the magazinre you want to search for\n";
+            string magazine_name;
+            std::cin.clear();
+            std::cin.sync();
+            std::getline(std::cin,magazine_name);
+            find_in_other_lib(magazine_name,"magazine",book_object,magazine_object);
+        }
+        else{
+            cout<<"\n\nError!! Invalid choice \n";
+        }
+        break;
+    case 10:
+        Record_of_purchase();
+        break;    
+    case 11:
+		
+        //system("clr");
         cout<<"\n\n EXIT\n";
+        break;
 	}
 }
 
@@ -319,11 +438,14 @@ void Faculty_display(journal & journal_object,magazine & magazine_object,book & 
         std::cout << "\t\t2. Borrow journals\n";
         std::cout << "\t\t3. search Magazine\n";
         std::cout << "\t\t4. Borrow Book\n";
-       std:: cout << "\t\t5. Return Book\n";
+        std:: cout << "\t\t5. Return Book\n";
         std::cout << "\t\t6. Borrow Magazine\n";
         std::cout << "\t\t7. Return Magazine\n";
-        std::cout << "\t\t8. Exit\n";
-       std:: cout << endl;
+        std::cout<<"\t\t8. Borrow from other libraray \n";
+        std::cout<<"\t\t9. Find in other libraray \n";
+        std::cout<<"\t\t10. Record for purchase of the new journals, books or magazines \n";
+        std::cout << "\t\t11. Exit\n";
+        std:: cout << endl;
         std::cout << "Please Enter Your Above Choice : ";
         int chose;
         string name;
@@ -382,12 +504,70 @@ void Faculty_display(journal & journal_object,magazine & magazine_object,book & 
         std::getline(std::cin,name);
             Return_magazine(name,magazine_object);
             break;
+       
+        //void Borrow_from_other_lib(string name,string item,book & book_object,magazine & magazine_object)
         case 8:
-            // main();
-            system("clr");
-        std::    cout<<"\n\nEXIT\n";
+            cout<<"\t\t1.Borrow Book from other library if it is not available in our college\n";
+            cout<<"\t\t2.Borrow Magazine from other library if it is not available in our college\n";
+            cout<<"\nEnter the choice from above\n";
+            int u;
+            cin>>u;
+            if(u==1){
+                cout<<"\n\nEnter the original title of the book you want to search for \n";
+                string book_name;
+                std::cin.clear();
+                std::cin.sync();
+                std::getline(std::cin,book_name);
+                Borrow_from_other_lib(book_name,"book",book_object,magazine_object);
+            }
+            else if(u==2){
+                cout<<"\n\nEnter the publication name of the magazinre you want to search for\n";
+                string magazine_name;
+                std::cin.clear();
+                std::cin.sync();
+                std::getline(std::cin,magazine_name);
+                Borrow_from_other_lib(magazine_name,"magazine",book_object,magazine_object);
+            }
+            else{
+                cout<<"\n\nError!! Invalid choice \n";
+            }
+            
             break;
-        }
+        case 9:
+            cout<<"\t\t1.Find Book from other library if it is not available in our college\n";
+            cout<<"\t\t2.Find Magazine from other library if it is not available in our college\n";
+            cout<<"\nEnter the choice from above\n";
+            int t;
+            cin>>t;
+            if(t==1){
+                cout<<"\n\nEnter the original title of the book you want to search for \n";
+                string book_name;
+                std::cin.clear();
+                std::cin.sync();
+                std::getline(std::cin,book_name);
+                find_in_other_lib(book_name,"book",book_object,magazine_object);
+            }
+            else if(t==2){
+                cout<<"\n\nEnter the publication name of the magazinre you want to search for\n";
+                string magazine_name;
+                std::cin.clear();
+                std::cin.sync();
+                std::getline(std::cin,magazine_name);
+                find_in_other_lib(magazine_name,"magazine",book_object,magazine_object);
+            }
+            else{
+                cout<<"\n\nError!! Invalid choice \n";
+            }
+            break;
+        case 10:
+            Record_of_purchase();
+            break;
+         case 11:
+            //system("clr");
+        std::    cout<<"\n\nEXIT\n";
+            break;    
+        } 
+
 }
 
 void Faculty_login(journal & journal_object,magazine & magazine_object,book & book_object){
@@ -583,8 +763,7 @@ void firstpage(student* S, Faculty* F,int &p,int &q,journal & journal_object,mag
 
 
 
-int main(){
-  std::cout<<"1"<<endl;  
+int main(){  
   student* S = new student[100];
   Faculty* F = new Faculty[100];
 //   int k=0;
@@ -595,6 +774,7 @@ int main(){
 
 
   int p=0,q=0;
+
   firstpage(S,F,p,q,journal_object,magazine_object,book_object);
 
   return 0;
