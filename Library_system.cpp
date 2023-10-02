@@ -40,8 +40,6 @@ class student : public user{
  }
 };
 
-
-
 class Faculty : public user{
    public: 
     Faculty(string name,string password):user(name,password,"Faculty"){}
@@ -50,7 +48,6 @@ class Faculty : public user{
     }
     // user_array Faculty_array[100];
 };
-
 
 void put_student_info(string account, string password,student* S, int &p){
  S[p].name=account;
@@ -84,8 +81,6 @@ int check_student(string account,string password,student* S ,int p){
   return 0;
 }
 
-
-
 void put_faculty_info(string account, string password ,Faculty* F,int &q){
  F[q].name=account;
  F[q].password=password;
@@ -104,7 +99,6 @@ int check_faculty_username(string account ,Faculty* F ){
  }
  return 0;
 }
-
 
 int check_faculty(string account,string password,Faculty* F ,int q){
  bool usertaken=false;
@@ -235,7 +229,7 @@ void find_in_other_lib(string name,string item,book & book_object,magazine & mag
                 int row=i/10;
                 int col=i%10;
                 string s=which_lib(i);
-                cout<<"\n\n Book is in the "<<s<<" college library at row "<<row+1<<" and column "<<col+1<<endl;
+                cout<<"\n\nBook is in the "<<s<<" college library at row "<<row+1<<" and column "<<col+1<<endl;
             }
         }
     }
@@ -245,7 +239,7 @@ void find_in_other_lib(string name,string item,book & book_object,magazine & mag
                 string s=which_lib(i);
                 int row=i/10;
                 int col=i%10;
-                cout<<"\n\n Magazine is in the "<<s<<" college library at row "<<row+1<<" and column "<<col+1<<endl;              
+                cout<<"\n\nMagazine is in the "<<s<<" college library at row "<<row+1<<" and column "<<col+1<<endl;              
             }
         }
     }
@@ -264,7 +258,7 @@ void Borrow_from_other_lib(string name,string item,book & book_object,magazine &
                 }
                 else{
                     std::cout<<"\n\nBook is in "<<s<<endl;
-                    std::cout<<"\n\n It will take 7 days of delay \n";
+                    std::cout<<"\n\nIt will take 7 days of delay \n";
                     return;
                 }
             }
@@ -279,7 +273,7 @@ void Borrow_from_other_lib(string name,string item,book & book_object,magazine &
                     cout<<"\n\nMagazine is issued on date and time at :"<<current_time()<<endl;
                 }
                 else{
-                    cout<<"\n\n It will take 7 days of delay\n";
+                    cout<<"\n\nIt will take 7 days of delay\n";
                 }
             }
         }
@@ -287,7 +281,23 @@ void Borrow_from_other_lib(string name,string item,book & book_object,magazine &
 
 
 }
-void Record_of_purchase(){}
+struct trackofrequest_journal{
+ string publication;
+ int count;
+};
+void Record_of_purchase(journal journal_object){
+    int y=0;
+    for(int i=0;i<110;i++){
+        if(journal_object.count[i]!=0){
+            cout<<"\n\nJournal "<<journal_object.journal_array[i]<<" is Subscribed "<<endl;
+            y++;
+        }
+         if(y==3){
+                return;
+            }
+    }
+    cout<<"\n\nThere is no request for journal which you want subscription \n";
+}
 
 void student_display(journal & journal_object,magazine & magazine_object,book & book_object)
 {
@@ -418,8 +428,24 @@ void student_display(journal & journal_object,magazine & magazine_object,book & 
         }
         break;
     case 10:
-        Record_of_purchase();
-        break;    
+            cout<<"\n\nEnter the number i.e how many journal you want to request\n";
+            int m;
+            cin>>m;
+            cout<<"\n\nEnter the publication name of journal which you want to request for subscription \n";
+            for(int i=0;i<m;i++){
+                cin.clear();
+                cin.sync();
+                getline(cin,name);
+                for(int j=0;j<110;j++){
+                    if(name==journal_object.journal_array[j]){
+                        journal_object.count[j]++;
+                    }
+                }
+            }
+            
+            Record_of_purchase(journal_object);
+            cout<<"\n\nThese are the respective journal which is subscribed based on the requests and budget institute have \n";
+            break;    
     case 11:
 		
         //system("clr");
@@ -560,7 +586,23 @@ void Faculty_display(journal & journal_object,magazine & magazine_object,book & 
             }
             break;
         case 10:
-            Record_of_purchase();
+            cout<<"\n\nEnter the number i.e how many journal you want to request\n";
+            int m;
+            cin>>m;
+            cout<<"\n\nEnter the publication name of journal which you want to request for subscription \n";
+            for(int i=0;i<m;i++){
+                cin.clear();
+                cin.sync();
+                getline(cin,name);
+                for(int j=0;j<110;j++){
+                    if(name==journal_object.journal_array[j]){
+                        journal_object.count[j]++;
+                    }
+                }
+            }
+            
+            Record_of_purchase(journal_object);
+            cout<<"\n\nThese are the respective journal which is subscribed based on the requests and budget institute have \n";
             break;
          case 11:
             //system("clr");
@@ -760,8 +802,6 @@ void firstpage(student* S, Faculty* F,int &p,int &q,journal & journal_object,mag
 			firstpage(S,F,p,q,journal_object,magazine_object,book_object);
 		}
 }
-
-
 
 int main(){  
   student* S = new student[100];

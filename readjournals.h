@@ -7,6 +7,7 @@ class journal{
     public:
         std::string journal_array[110];
         bool isborrowed[110]={0};
+        int count[110]={0};
         //std::string borrowed_time[110];
 
         journal(std::string);  

@@ -1,0 +1,44 @@
+Commands for the building of the file
+1. Use make command to create debug_file.exe and optimize_file.exe files
+2. Use ./debug_file.exe to run the executable file with/without debugger
+3. Use ./optimize_file.exe to run the optimized executable file 
+
+login page {
+    1.Faculty{
+                1.Faculty login
+                2.Faculty Register
+                3.Back to Main Menu
+                4.Exit
+                }
+    2.student{
+                1.student login
+                2.student Register
+                3.Back to main Menu
+                4.Exit
+                }
+    3.Exit
+}
+
+initial faculty login or student login not possible because intially we have no record of any student or faculty.
+first we need to register then login .
+
+then there is two menu :
+ 1.Faculty menu page 
+ 2.Student menu page
+
+ inside both page there are 11 options:-
+  1.search book
+  2.Borrow journals
+  3.search Magazine
+  4.Borrow book
+  5. Return Book
+  6. Borrow Magazine
+  7. Return Magazine
+  8. Borrow from other libraray
+  9. Find in other libraray
+  10. Record for purchase of the new journals, books or magazines
+  11. Exit
+
+  Question 1 is done in options 1 to 7
+  Question 2 is done in option  8 to 9
+  Question 3 is done in option 10
