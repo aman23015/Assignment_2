@@ -130,8 +130,28 @@ int check_faculty(string account,string password,Faculty* F ,int q){
  }
  return 0;
 }
-void search_book(){}
-void search_magazine(){}
+void search_book(string name,book object){
+    for(int i=0;i<110;i++){
+        if(name==object.book_rows_array[i].original_title){
+            int row=i/10,col=i%10;
+            cout<<"Book is present at "<<row+1<<" row and "<<col+1<<" column "<<endl;
+            return;
+        }
+    }
+    cout<<"\n\nError!! Book is not present \n";
+}
+void search_magazine(string name,magazine object){
+    char s='"';
+    name=s+name+s;
+    for(int i=0;i<110;i++){
+        if(name==object.magazine_array[i].publication){
+            int row=i/10,col=i%10;
+            cout<<"Magazine is present at "<<row+1<<" row and "<<col+1<<" column "<<endl;
+            return;
+        }
+    }
+    cout<<"\n\nError!! Magazine is not available \n";
+}
 void Borrow_book(string name,book & object){//borrowed_item &borrowed_item_record
    
     for(int i=0;i<110;i++){
@@ -234,7 +254,11 @@ void student_display(journal & journal_object,magazine & magazine_object,book & 
 	switch (chose)
 	{
 	case 1:
-		search_book();
+		 std::cout<<"\n\nEnter the original title of the book which you want to search for \n";
+         std::cin.clear();
+         std::cin.sync();
+         std::getline(std::cin,name);
+         search_book(name,book_object);
 		break;
 	case 2:
         cout<<"\n\nEnter the name of the journal which you want to borrowed\n ";
@@ -244,7 +268,11 @@ void student_display(journal & journal_object,magazine & magazine_object,book & 
 		Borrow_journals(name,journal_object);
 		break;
 	case 3:
-		search_magazine();
+		    std:: cout<<"\n\nEnter the name of the magazine which you want to search for \n";
+            std::cin.clear();
+            std::cin.sync();
+            std::getline(std::cin,name);
+            search_magazine(name,magazine_object);
 		break;
 	case 4:
         cout<<"\n\nEnter the original title  of the book you want to borrowed\n";
